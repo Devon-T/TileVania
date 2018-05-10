@@ -21,7 +21,8 @@ public class PlayerController : MonoBehaviour {
     //Cached component references
     Rigidbody2D myRigidBody;
     Animator myAnimator;
-    Collider2D myCollider;
+    CapsuleCollider2D myBodyCollider;
+    BoxCollider2D myFeet;
     AudioSource audioSource;
     float gravityScaleAtStart;
 
@@ -29,7 +30,8 @@ public class PlayerController : MonoBehaviour {
     void Start () {
         myRigidBody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-        myCollider = GetComponent<Collider2D>();
+        myBodyCollider = GetComponent<CapsuleCollider2D>();
+        myFeet = GetComponent<BoxCollider2D>();
         gravityScaleAtStart = myRigidBody.gravityScale;
         audioSource = GetComponent<AudioSource>();
 
@@ -93,8 +95,10 @@ public class PlayerController : MonoBehaviour {
     private void Jump()
     {
         bool playerVerticalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon;
-        bool onGroundCheck = myCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        //change myFeet to myBodyCollider to add walljumping
+        bool onGroundCheck = myFeet.IsTouchingLayers(LayerMask.GetMask("Ground"));
         if (CrossPlatformInputManager.GetButtonDown("Jump") && onGroundCheck && !playerVerticalSpeed)
+            //Uncomment this if statement and comment the above if you want to turn on wall jumps
 //          if (CrossPlatformInputManager.GetButtonDown("Jump") && onGroundCheck)
             {
             Vector2 jumpVelocityToAdd = new Vector2(0f, jumpStrength);
@@ -106,7 +110,7 @@ public class PlayerController : MonoBehaviour {
     private void Climbing()
     {
         float verticalInputCheck = CrossPlatformInputManager.GetAxis("Vertical");
-        bool touchingLadderCheck = myCollider.IsTouchingLayers(LayerMask.GetMask("Ladders"));
+        bool touchingLadderCheck = myFeet.IsTouchingLayers(LayerMask.GetMask("Ladders"));
         if (!touchingLadderCheck)
         {
             myRigidBody.gravityScale = gravityScaleAtStart;
