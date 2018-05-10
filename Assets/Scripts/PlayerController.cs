@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
     [Tooltip("In ms^-1")] [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpStrength = 8f;
     [SerializeField] float climbSpeed = 5f;
+    [SerializeField] AudioClip JumpSound;
 
     //State
     bool isAlive = true;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour {
     Rigidbody2D myRigidBody;
     Animator myAnimator;
     Collider2D myCollider;
+    AudioSource audioSource;
     float gravityScaleAtStart;
 
     //Message the methods  
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour {
         myAnimator = GetComponent<Animator>();
         myCollider = GetComponent<Collider2D>();
         gravityScaleAtStart = myRigidBody.gravityScale;
+        audioSource = GetComponent<AudioSource>();
 
     }
 
@@ -44,6 +47,16 @@ public class PlayerController : MonoBehaviour {
         Jump();
         FlipSprite();
         Climbing();
+        CheatMode();
+    }
+
+    private void CheatMode()
+    {
+        if (CrossPlatformInputManager.GetButton("Fire1"))
+        {
+            print("cheat code");
+            
+        }
     }
 
     private void Run()
@@ -79,11 +92,14 @@ public class PlayerController : MonoBehaviour {
 
     private void Jump()
     {
+        bool playerVerticalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon;
         bool onGroundCheck = myCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
-        if (CrossPlatformInputManager.GetButtonDown("Jump") && onGroundCheck)
-        {
+        if (CrossPlatformInputManager.GetButtonDown("Jump") && onGroundCheck && !playerVerticalSpeed)
+//          if (CrossPlatformInputManager.GetButtonDown("Jump") && onGroundCheck)
+            {
             Vector2 jumpVelocityToAdd = new Vector2(0f, jumpStrength);
             myRigidBody.velocity += jumpVelocityToAdd;
+            audioSource.PlayOneShot(JumpSound);
         }
     }
 
