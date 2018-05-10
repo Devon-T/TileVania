@@ -50,8 +50,17 @@ public class PlayerController : MonoBehaviour {
     {
         
         float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal");
-        Vector2 playerVelocity = new Vector2(runSpeed * controlThrow, myRigidBody.velocity.y);
-        myRigidBody.velocity = playerVelocity;
+        if (CrossPlatformInputManager.GetButton("Run"))
+        {
+            Vector2 playerRunVelocity = new Vector2(runSpeed * 2 * controlThrow, myRigidBody.velocity.y);
+            myRigidBody.velocity = playerRunVelocity;
+        }
+        else
+        {
+            Vector2 playerVelocity = new Vector2(runSpeed * controlThrow, myRigidBody.velocity.y);
+            myRigidBody.velocity = playerVelocity;
+        }
+        
 
         bool playerHasHorizontalSpeed = Mathf.Abs(myRigidBody.velocity.x) > Mathf.Epsilon;
         myAnimator.SetBool("Running", playerHasHorizontalSpeed);
@@ -89,11 +98,16 @@ public class PlayerController : MonoBehaviour {
             return;
         }
         myRigidBody.gravityScale = 0f;
-        Vector2 climbVelocity = new Vector2(myRigidBody.velocity.x, climbSpeed * verticalInputCheck);
+        Vector2 climbVelocity = new Vector2(myRigidBody.velocity.x, climbSpeed * verticalInputCheck); 
         myRigidBody.velocity = climbVelocity;
 
         bool playerHasVerticalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon;
         myAnimator.SetBool("Climbing", playerHasVerticalSpeed);
+        if (playerHasVerticalSpeed)
+        {
+            Vector2 lockXOnLatter = new Vector2(0, myRigidBody.velocity.y);
+            myRigidBody.velocity = lockXOnLatter;
+        }
 
     }
 }
