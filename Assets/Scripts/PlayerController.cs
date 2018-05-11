@@ -12,11 +12,12 @@ public class PlayerController : MonoBehaviour {
     [Tooltip("In ms^-1")] [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpStrength = 8f;
     [SerializeField] float climbSpeed = 5f;
+    [SerializeField] Vector2 deathKick = new Vector2(-15f, 15f);
     [SerializeField] AudioClip JumpSound;
+    [SerializeField] AudioClip Death;
 
     //State
     bool isAlive = true;
-    
 
     //Cached component references
     Rigidbody2D myRigidBody;
@@ -40,6 +41,11 @@ public class PlayerController : MonoBehaviour {
     public void OnPlayerDeath()
     {
         isAlive = false;
+        audioSource.PlayOneShot(Death);
+        myAnimator.SetTrigger("Die");
+        GetComponent<Rigidbody2D>().velocity = deathKick;
+
+        
     }
 
     // Update is called once per frame
@@ -49,16 +55,6 @@ public class PlayerController : MonoBehaviour {
         Jump();
         FlipSprite();
         Climbing();
-        CheatMode();
-    }
-
-    private void CheatMode()
-    {
-        if (CrossPlatformInputManager.GetButton("Fire1"))
-        {
-            print("cheat code");
-            
-        }
     }
 
     private void Run()
@@ -130,6 +126,4 @@ public class PlayerController : MonoBehaviour {
         }
 
     }
-
-    private void 
 }
