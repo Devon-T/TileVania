@@ -10,11 +10,16 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] bool collisionDisabled;
     [SerializeField] float levelLoadDelay = 3f;
 
+    bool isDead = false;
+
     CapsuleCollider2D myBodyCollider;
+    BoxCollider2D myFeetCollider;
+
     // Use this for initialization
     void Start()
     {
         myBodyCollider = GetComponent<CapsuleCollider2D>();
+        myFeetCollider = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -30,9 +35,15 @@ public class CollisionHandler : MonoBehaviour
     private void EnemyCollision()
     {
         if (collisionDisabled) { return; }
-        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")) || myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Hazards")))
         {
+            if (isDead) { return; }
             StartDeathSequence();
+            isDead = true;
+        }
+        if (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+        {
+            KillEnemy();
         }
     }
     private void StartDeathSequence()
@@ -63,5 +74,10 @@ public class CollisionHandler : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
+    }
+
+    private void KillEnemy()
+    {
+        print("die!");
     }
 }

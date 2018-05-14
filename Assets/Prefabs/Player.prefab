@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114123860104235368}
   - component: {fileID: 61883940760792534}
   - component: {fileID: 82625509885133756}
+  - component: {fileID: 114066751688072210}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -40,7 +41,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1110673648222500}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.33, y: 0.47, z: 0}
+  m_LocalPosition: {x: -7.06, y: -2.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,7 +79,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.026204228, y: -0.44288123}
+  m_Offset: {x: -0.026204228, y: -0.44158465}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -89,7 +90,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.43847108, y: 0.09532452}
+  m_Size: {x: 0.43847108, y: 0.09273136}
   m_EdgeRadius: 0
 --- !u!70 &70111594258367346
 CapsuleCollider2D:
@@ -203,6 +204,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114066751688072210
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1110673648222500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034c1c0ebbb3b844a95610d07e36dd00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionDisabled: 0
+  levelLoadDelay: 3
 --- !u!114 &114123860104235368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -217,7 +231,9 @@ MonoBehaviour:
   runSpeed: 5
   jumpStrength: 23
   climbSpeed: 5
+  deathKick: {x: -15, y: 15}
   JumpSound: {fileID: 8300000, guid: 83a29913b0c784840b9b8e15c77ed052, type: 3}
+  Death: {fileID: 0}
 --- !u!212 &212913054418070426
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -250,7 +266,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -667583007
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300010, guid: 8e2fc17d5ffe5de41abb0db3c8f2571b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
