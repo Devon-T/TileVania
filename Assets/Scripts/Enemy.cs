@@ -6,20 +6,33 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
     [SerializeField] float moveSpeed = 1f;
+    [SerializeField] float deathDelay = 1f;
 
     Rigidbody2D myRigidBody;
     CapsuleCollider2D myBodyCollider;
     BoxCollider2D myFeetCollider;
+    Animator myAnimator;
+
+    bool isAlive = true;
 
 	// Use this for initialization
 	void Start () {
         myRigidBody = GetComponent<Rigidbody2D>();
-	}
+        myBodyCollider = GetComponent<CapsuleCollider2D>();
+        myAnimator = GetComponent<Animator>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        Walk();
-	}
+        if (isAlive)
+        {
+            Walk();
+        }
+        PlayerAttack();
+
+    }
+
+
 
     private void Walk()
     {
@@ -46,7 +59,23 @@ public class Enemy : MonoBehaviour {
         transform.localScale = new Vector2(-(Mathf.Sign(myRigidBody.velocity.x)), 1f);
     }
 
+    public void PlayerAttack()
+    {
+        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Player Feet")))
+        {
+            KillEnemy();
+        }
+    }
+
     public void KillEnemy()
+    {
+        myAnimator.SetTrigger("Die");
+        isAlive = false;
+        myRigidBody.velocity = new Vector2(0, 0);
+        Invoke("Destroy", deathDelay);
+    }
+
+    public void Destroy()
     {
         Destroy(gameObject);
     }

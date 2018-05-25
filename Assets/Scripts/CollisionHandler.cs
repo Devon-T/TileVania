@@ -10,6 +10,7 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] bool collisionDisabled;
     [SerializeField] float levelLoadDelay = 3f;
 
+    int sceneID;
     bool isDead = false;
 
     CapsuleCollider2D myBodyCollider;
@@ -41,10 +42,6 @@ public class CollisionHandler : MonoBehaviour
             StartDeathSequence();
             isDead = true;
         }
-        if (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
-        {
-            KillEnemy();
-        }
     }
     private void StartDeathSequence()
     {
@@ -54,7 +51,8 @@ public class CollisionHandler : MonoBehaviour
 
     private void RestartGame()
     {
-        SceneManager.LoadScene(0);
+        sceneID = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(sceneID);
     }
 
     private void debugControls()
@@ -75,9 +73,5 @@ public class CollisionHandler : MonoBehaviour
             SceneManager.LoadScene(0);
         }
     }
-
-    private void KillEnemy()
-    {
-        print("die!");
-    }
+    
 }
